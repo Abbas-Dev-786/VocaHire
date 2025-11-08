@@ -7,10 +7,10 @@ import {
 } from "viem";
 import { privateKeyToAccount } from "viem/accounts";
 
-const ARC_RPC_URL = process.env.ARC_RPC_URL!;
+const ARC_RPC_URL = process.env.NEXT_PUBLIC_ARC_RPC_URL!;
 export const REGISTRY_ADDRESS = process.env.REGISTRY_ADDRESS as `0x${string}`;
 export const ESCROW_ADDRESS = process.env.ESCROW_ADDRESS as `0x${string}`;
-const RELAYER_PRIVATE_KEY = process.env.RELAYER_PRIVATE_KEY!;
+const RELAYER_PRIVATE_KEY = process.env.NEXT_PUBLIC_RELAYER_PRIVATE_KEY!;
 
 export const registryAbi = [
   {
