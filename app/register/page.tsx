@@ -39,13 +39,13 @@ export default function RegisterAgent() {
       </label>
 
       <label className="block space-y-1">
-        <span className="text-sm font-semibold">Metadata URI</span>
+        <span className="text-sm font-semibold">Agent Name</span>
         <input
           type="text"
           className="border rounded p-2 w-full"
           value={form.metaURI}
           onChange={(e) => setForm({ ...form, metaURI: e.target.value })}
-          placeholder="https://example.com/metadata.json"
+          placeholder="Appointment Scheduler"
         />
       </label>
 
