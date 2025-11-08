@@ -1,0 +1,40 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+  // directUrl         = env("DIRECT_URL")
+}
+
+model Agent {
+  id             String   @id @default(cuid())
+  elevenlabsId   String   @unique
+  circleWalletId String   @unique
+  payoutAddress  String   @unique
+  metaURI        String
+  ratePerCall    Float
+  active         Boolean  @default(true)
+  createdAt      DateTime @default(now())
+}
+
+model Job {
+  id               String   @id @default(cuid())
+  onchainJobId     Int?
+  clientAddr       String
+  agentId          String    // stores agentController address or foreign id you prefer
+  amountUSDC       Float
+  status           String    // open | completed | canceled
+  circleTransferId String?
+  txHash           String?
+  callId           String?
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+}
