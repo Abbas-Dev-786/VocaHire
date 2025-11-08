@@ -141,72 +141,144 @@ export default function Hire() {
   }
 
   return (
-    <main className="max-w-2xl mx-auto p-6 space-y-5">
-      <h1 className="text-2xl font-bold">Hire Voice Agent</h1>
+    <main className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      <div className="mb-8 animate-fade-in">
+        <h1 className="text-4xl font-bold mb-2">
+          <span className="gradient-text">Hire Voice Agent</span>
+        </h1>
+        <p className="text-gray-600 dark:text-gray-400">
+          Create a new job and let the agent handle your call
+        </p>
+      </div>
 
-      {/* New Connect Wallet Button */}
-      {!wallet && (
-        <button
-          onClick={connectWallet}
-          className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-500 w-full"
-        >
-          Connect Wallet
-        </button>
-      )}
+      <div className="bg-white dark:bg-gray-800 rounded-2xl border border-gray-200 dark:border-gray-700 p-8 shadow-lg animate-fade-in">
+        {/* Wallet Connection */}
+        {!wallet && (
+          <div className="mb-6 p-4 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-xl">
+            <p className="text-sm text-blue-800 dark:text-blue-300 mb-3">
+              {mode === "escrow" 
+                ? "Connect your wallet to use on-chain escrow payment" 
+                : "Optional: Connect wallet for on-chain escrow mode"}
+            </p>
+            <button
+              onClick={connectWallet}
+              className="w-full px-4 py-3 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-xl font-semibold hover:from-blue-700 hover:to-indigo-700 transition-all duration-200 shadow-md hover:shadow-lg"
+            >
+              🔗 Connect Wallet
+            </button>
+          </div>
+        )}
 
-      {/* ... (rest of your form: prompt, amount, mode) ... */}
+        {wallet && (
+          <div className="mb-6 p-4 bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-xl">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm font-semibold text-green-800 dark:text-green-300">
+                  Wallet Connected
+                </p>
+                <p className="text-xs text-green-600 dark:text-green-400 font-mono mt-1">
+                  {wallet.account.slice(0, 6)}...{wallet.account.slice(-4)}
+                </p>
+              </div>
+              <div className="w-10 h-10 rounded-full bg-green-500 flex items-center justify-center">
+                <span className="text-white text-lg">✓</span>
+              </div>
+            </div>
+          </div>
+        )}
 
-      <label className="block space-y-1">
-        <span className="text-sm font-semibold">Phone number</span>
-        <input
-          value={prompt}
-          type="tel"
-          onChange={(e) => setPrompt(e.target.value)}
-          placeholder="enter phone number"
-          className="border rounded p-2 w-full"
-        />
-      </label>
+        <div className="space-y-6">
+          <label className="block">
+            <span className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
+              Phone Number
+            </span>
+            <input
+              value={prompt}
+              type="tel"
+              onChange={(e) => setPrompt(e.target.value)}
+              placeholder="+1 (555) 123-4567"
+              className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-xl bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all"
+            />
+          </label>
 
-      <label className="block space-y-1">
-        <span className="text-sm font-semibold">Budget (USDC)</span>
-        <input
-          type="number"
-          value={amount}
-          onChange={(e) => setAmount(Number(e.target.value))}
-          className="border rounded p-2 w-full"
-        />
-      </label>
+          <label className="block">
+            <span className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
+              Budget (USDC)
+            </span>
+            <div className="relative">
+              <input
+                type="number"
+                step="0.01"
+                min="0"
+                value={amount}
+                onChange={(e) => setAmount(Number(e.target.value))}
+                className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-xl bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all"
+              />
+              <span className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-500 dark:text-gray-400 font-medium">
+                USDC
+              </span>
+            </div>
+          </label>
 
-      <label className="block space-y-1">
-        <span className="text-sm font-semibold">Payment Mode</span>
-        <select
-          className="border rounded p-2 w-full"
-          value={mode}
-          onChange={(e) => setMode(e.target.value as any)}
-        >
-          <option value="escrow">On-chain Escrow</option>
-          <option value="circle">Circle Transfer</option>
-        </select>
-      </label>
+          <label className="block">
+            <span className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
+              Payment Mode
+            </span>
+            <select
+              className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-xl bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all"
+              value={mode}
+              onChange={(e) => setMode(e.target.value as any)}
+            >
+              <option value="escrow">On-chain Escrow</option>
+              <option value="circle">Circle Transfer</option>
+            </select>
+            <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+              {mode === "escrow" 
+                ? "Funds are held in escrow until job completion" 
+                : "Direct transfer via Circle payment"}
+            </p>
+          </label>
 
-      <button
-        onClick={openJob}
-        className="px-4 py-2 bg-black text-white rounded hover:bg-gray-800"
-        disabled={mode === "escrow" && !wallet} // Disable if escrow and no wallet
-      >
-        Open Job
-      </button>
+          <button
+            onClick={openJob}
+            disabled={mode === "escrow" && !wallet}
+            className="w-full px-6 py-4 bg-gradient-to-r from-indigo-600 to-purple-600 text-white rounded-xl font-semibold hover:from-indigo-700 hover:to-purple-700 transition-all duration-200 shadow-md hover:shadow-lg transform hover:-translate-y-0.5 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
+          >
+            {resp?.message ? resp.message : "Open Job"}
+          </button>
+        </div>
 
-      {resp && (
-        <pre className="bg-gray-100 p-3 rounded text-sm overflow-auto">
-          {JSON.stringify(
-            resp,
-            (key, value) =>
-              typeof value === "bigint" ? value.toString() : value,
-            2
-          )}
-        </pre>
-      )}
+        {resp && (
+          <div className="mt-6 p-4 bg-gray-50 dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-700 animate-slide-in">
+            {resp.error ? (
+              <div className="mb-2">
+                <h3 className="text-sm font-semibold text-red-600 dark:text-red-400 mb-2">
+                  Error:
+                </h3>
+                <p className="text-xs text-red-600 dark:text-red-400">{resp.error}</p>
+              </div>
+            ) : resp.message ? (
+              <div className="mb-2">
+                <h3 className="text-sm font-semibold text-indigo-600 dark:text-indigo-400 mb-2">
+                  Status:
+                </h3>
+                <p className="text-sm text-gray-700 dark:text-gray-300">{resp.message}</p>
+              </div>
+            ) : null}
+            <h3 className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
+              Response Details:
+            </h3>
+            <pre className="text-xs text-gray-600 dark:text-gray-400 overflow-auto">
+              {JSON.stringify(
+                resp,
+                (key, value) =>
+                  typeof value === "bigint" ? value.toString() : value,
+                2
+              )}
+            </pre>
+          </div>
+        )}
+      </div>
     </main>
   );
 }
